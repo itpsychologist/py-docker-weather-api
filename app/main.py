@@ -2,7 +2,7 @@ import os
 import requests
 
 
-def get_weather(city="Paris") -> None:
+def get_weather(city: str = "Paris") -> None:
     api_key = os.environ.get("API_KEY")
 
     if not api_key:
@@ -10,11 +10,7 @@ def get_weather(city="Paris") -> None:
         return
 
     base_url = "https://api.weatherapi.com/v1/current.json"
-    params = {
-        "key": api_key,
-        "q": city,
-        "aqi": "no"
-    }
+    params = {"key": api_key, "q": city, "aqi": "no"}
 
     try:
         response = requests.get(base_url, params=params)
@@ -24,12 +20,13 @@ def get_weather(city="Paris") -> None:
         location = data["location"]
         current = data["current"]
 
-        print(f"Weather in {location['name']}, {location['country']}:")
+        print(f"Weather in {location['name']}, {location['country']}: ")
         print(f"Temperature: {current['temp_c']}°C ({current['temp_f']}°F)")
         print(f"Condition: {current['condition']['text']}")
         print(f"Humidity: {current['humidity']}%")
         print(f"Wind: {current['wind_kph']} km/h")
-        print(f"Feels like: {current['feelslike_c']}°C ({current['feelslike_f']}°F)")
+        print(f"Feels like: {current['feelslike_c']}°C "
+              f"({current['feelslike_f']}°F)")
 
     except requests.exceptions.RequestException as e:
         print(f"Error fetching weather data: {e}")
